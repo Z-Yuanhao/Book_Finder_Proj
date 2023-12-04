@@ -44,8 +44,10 @@
   },
   "dependencies": {
     "@heroicons/react": "2.0.18",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react": "^18.2.0",
+    "react-dom": "18.2.0",
+    "react-window": "^1.8.10",
+    "window": "^4.2.7"
   },
   "devDependencies": {
     "@commitlint/cli": "17.4.2",
@@ -56,6 +58,7 @@
     "@types/node": "20.6.5",
     "@types/react": "^18.2.18",
     "@types/react-dom": "^18.2.7",
+    "@types/react-window": "^1.8.8",
     "@typescript-eslint/eslint-plugin": "^6.2.1",
     "@typescript-eslint/parser": "^6.2.1",
     "@vitejs/plugin-react": "^4.0.4",
