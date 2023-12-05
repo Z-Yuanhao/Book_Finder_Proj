@@ -8,7 +8,6 @@ const renderBookRow = ({
     const isEvenRow = index % 2 === 0;
 
     const className = `flex justify-start items-center px-4 ${isEvenRow ? 'bg-gray-100' : 'bg-white'}`;
-//how to change background color????
     const book = data[index];
     const encodedCoverImg = encodeURIComponent(book.cover_i);
     const coverImageUrl = book.cover_i ? `https://covers.openlibrary.org/b/id/${encodedCoverImg}-S.jpg`: '';
