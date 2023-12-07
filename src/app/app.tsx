@@ -1,7 +1,12 @@
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { Fetch } from "components/atoms/fetch/fetch";
 import { Book, BookList } from "components/organisms/book-list";
-import { useFetch } from "hooks/use-fetch";
+import { ChangeEvent, MouseEvent, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { Outlet } from "react-router-dom";
 
+{
+  //RENDER BOOKLIST+BOOKDETAILS
+}
 interface SearchResponse {
   numFound: number;
   docs: Book[];
@@ -10,35 +15,19 @@ interface SearchResponse {
 function App() {
   const [bookName, setBookName] = useState("");
   const [fetchUri, setFetchUri] = useState("");
-  //const { data, statusloading, hasData } = useFetch<Book[]>(null);
-  //replaced with useFetch
-  //const [loading, setLoading] = useState(false);
-  //const [books, setBooks] = useState<Book[]>([]);
-  //const [hasResult, setHasResult] = useState(false);
-  //const [booksCount, setBooksCount] = useState(null);
 
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setBookName(e.target.value);
   };
-  //const encodedBookName = encodeURIComponent(bookName);
-  //const url = `https://openlibrary.org/search.json?q=${encodedBookName}`;
 
+
+  const encodedBookName = encodeURIComponent(bookName);
   const handleClick = async (event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
     setFetchUri(`https://openlibrary.org/search.json?q=${encodedBookName}`);
-    //setLoading(true);
-    //const response = await fetch(url);
-    //const data = await response.json(); 
-    //setLoading(false);
-    //window.console.log(data);
-    //setBooksCount(data.numFound);
-    //setHasResult(true);  
-    //setBooks(data.docs); //set to aray with type Book[]
   };
-  const encodedBookName = encodeURIComponent(bookName);
-  const { data, statusloading, hasData, books } = useFetch<SearchResponse>(fetchUri);
-  console.log(books)
+
 
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-start gap-4 mt-20 text-center">
@@ -59,9 +48,24 @@ function App() {
       >
         Search Books
       </button>
-      {statusloading ? <div>Loading ...</div> : ""}
-      {hasData ? <div>Found {data?.numFound} books</div> : ""}
-      <div><BookList books={books} /></div>
+      <div className="flex flex-col ">
+        <ErrorBoundary fallback={<div>Something went wrong</div>}>
+          <Fetch<SearchResponse>
+            uri={fetchUri}
+            renderData={(data) => (
+              <div className="flex flex-col">
+                <div>Found {data.numFound} books</div>
+                <BookList books={data.docs} />
+              </div>
+            )}
+          ></Fetch>
+        </ErrorBoundary>
+        <div className="pl-4 mt-4 " style={{ width: '600px'}}>
+          <ErrorBoundary fallback={<div>Something went wrong</div>}>
+            <Outlet />
+          </ErrorBoundary>
+        </div>
+      </div>
     </div>
   );
 }
