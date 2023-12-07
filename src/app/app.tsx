@@ -10,6 +10,7 @@ import * as Yup from 'yup';
 
 
 
+
 interface SearchResponse {
   numFound: number;
   docs: Book[];
@@ -27,17 +28,26 @@ function App() {
   const [bookName, setBookName] = useState("");
   const [fetchUri, setFetchUri] = useState("");
 
-
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setBookName(e.target.value);
   };
 
 
   const encodedBookName = encodeURIComponent(bookName);
+  
   const handleClick = async (event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
     setFetchUri(`https://openlibrary.org/search.json?q=${encodedBookName}`);
   };
+
+  //const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  //  e.preventDefault();
+  //  if (e.key === 'Enter') {
+  //    setFetchUri(`https://openlibrary.org/search.json?q=${encodedBookName}`);
+  //   }
+  //};
+
+
 
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-start gap-4 mt-20 text-center">
@@ -49,8 +59,8 @@ function App() {
           resetForm();
         }}
       >
-  {({ values, handleChange, handleBlur }) => (
-    <Form>
+  {({ values, handleChange, handleBlur, errors, touched }) => (
+    <Form onSubmit={(e) => e.preventDefault()}>
       <div className="flex-col justify-center items-center">
         <Field
           type="text"
@@ -70,7 +80,8 @@ function App() {
 
       <button
         type="button"
-        onClick={handleClick}
+        onClick={(event: MouseEvent<HTMLElement>) => {
+          if (touched.bookName && errors.bookName) {} else  handleClick(event);}}
         className="mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
       >
         Search Books
@@ -78,6 +89,7 @@ function App() {
     </Form>
   )}
 </Formik>
+
       <div className="flex flex-col ">
         <ErrorBoundary fallback={<div>Something went wrong</div>}>
           <Fetch<SearchResponse>

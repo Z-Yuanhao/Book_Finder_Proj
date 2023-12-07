@@ -1,10 +1,14 @@
 日志
 
 book-list
- 1- import { Book } 的path改为book-details后网页无法显示
+ 1- FIXED import { Book } 的path改为book-details后网页无法显示
  2- booklist 里无法封面与标题分开
 
- book-details
+book-details
  1- book.details.authors is an object, how to access as string
  to display
+ 2- some cover page wont display despite displaying in list (normal?)
  
+ app
+ 1- booklist book
+ 2- 回车clears input
