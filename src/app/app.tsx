@@ -8,9 +8,6 @@ import { ErrorMessage } from "formik";
 import * as Yup from 'yup';
 
 
-
-
-
 interface SearchResponse {
   numFound: number;
   docs: Book[];
@@ -94,12 +91,14 @@ function App() {
         <ErrorBoundary fallback={<div>Something went wrong</div>}>
           <Fetch<SearchResponse>
             uri={fetchUri}
-            renderData={(data) => (
-              <div className="flex flex-col">
-                <div>Found {data.numFound} books</div>
-                <BookList books={data.docs} />
-              </div>
-            )}
+            renderData={(data) => {
+              return (
+                <div className="flex flex-col">
+                  <div>Found {data.numFound} books</div>
+                  <BookList books={data.docs} />
+                </div>
+              );
+            }}
           ></Fetch>
         </ErrorBoundary>
         <div className="pl-4 mt-4 " style={{ width: '600px' }}>

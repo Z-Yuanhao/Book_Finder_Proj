@@ -11,11 +11,10 @@ const useFetch = <T>(uri: string | null) => {
             return;
         }
         // Provide a status before we start fetching
-        setStatusLoading(false);
+        setStatusLoading(true);
         fetch(uri)
             .then((response) => {
                 // Provide a status update when fetching finishes
-                setStatusLoading(true);
                 setHasData(true);
                 return response.json();
             })

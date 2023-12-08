@@ -8,7 +8,7 @@ const renderBookRow = ({
     data,
 }: ListChildComponentProps<Book[]>) => {
     const isEvenRow = index % 2 === 0;
-    const className = `flex justify-center items-center px-4 ${isEvenRow ? 'bg-gray-100' : 'bg-white'}`;
+    const className = `flex items-center px-4 overflow-hidden ${isEvenRow ? 'bg-gray-100' : 'bg-white'}`;
 
     const book = data[index];
     let isbn = null;
@@ -22,18 +22,20 @@ const renderBookRow = ({
 
 
     return (
-        <div className={className} style={style}>       
-            <img src={coverImageUrl} alt={title} /> 
-            <div>
-            <Link to={`books/${isbn}`}>
-            <div className="font-bold">{title}</div>
-            </Link>
+        <div className={className} style={style}>
+            <div className="w-14 h-16 flex justify-center items-center">
+                <img src={coverImageUrl} alt={title} /> 
+            </div>
+            <div className="flex grow justify-center">
+                <Link to={`books/${isbn}`}>
+                    <div className="font-bold">{title}</div>
+                </Link>
             </div>
         </div>
     );
 };
 interface BookListProps {
-    books: Book[] | undefined;
+    books: Book[];
 }
 const BookList = ({ books }: BookListProps) => {
     window.console.log("Book list", books);

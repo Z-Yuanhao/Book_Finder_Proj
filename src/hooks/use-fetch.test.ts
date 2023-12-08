@@ -24,11 +24,13 @@ describe("useFetch custom hook", () => {
       const testResponse: SearchResponse = {
         results: [{ title: "Star Wars" }],
       };
-      const mockResolveValue = {
-        ok: true,
-        json: () => new Promise((resolve) => resolve(testResponse)),
-      };
-  
+      const mockResolveValue = new Promise((resolveResponse) => {
+        resolveResponse({
+          ok: true,
+          json: () => new Promise((resolveJson) => resolveJson(testResponse)),
+        });
+      });
+      
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       fetchSpy.mockReturnValue(mockResolveValue as any);
   
