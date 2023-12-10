@@ -38,11 +38,15 @@ const BookDetails = () => {
         />
       );
     }
-    let authors = <></>;
+    let authors: React.ReactElement | null = null;
     if (book.details.authors) {
-      authors = book.details.authors.map((author, index) => (
-        <div key={index}>{author.name}</div>
-      ));
+      authors = (
+        <>
+          {book.details.authors.map((author, index) => (
+            <div key={index}>{author.name}</div>
+          ))}
+        </>
+      );
     }
     return (
       <div className="flex">

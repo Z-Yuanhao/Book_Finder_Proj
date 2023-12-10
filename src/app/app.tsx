@@ -148,5 +148,5 @@ function App() {
     </div>
   );
 }
-
+export { Login, LogOut, UserDetail, App };
 export default App;
