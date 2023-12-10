@@ -40,8 +40,8 @@ const BookDetails = () => {
     }
     let authors = <></>;
     if (book.details.authors) {
-      authors = book.details.authors.map((auther, index) => (
-        <div key={index}>{auther.name}</div>
+      authors = book.details.authors.map((author, index) => (
+        <div key={index}>{author.name}</div>
       ));
     }
     return (

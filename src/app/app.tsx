@@ -6,6 +6,52 @@ import { Outlet } from "react-router-dom";
 import { Formik, Field, Form, FormikHelpers } from 'formik';
 import { ErrorMessage } from "formik";
 import * as Yup from 'yup';
+import * as Realm from "realm-web";
+
+const app = new Realm.App({ id: "application-0-ypjwh" });
+// Create a component that lets an anonymous user log in
+interface LoginProps {
+  setUser: (user: Realm.User) => void;
+};
+
+const Login = ({ setUser }: LoginProps) => {
+  const loginGoogle = async () => {
+    const user: Realm.User = await app.logIn(Realm.Credentials.google({redirectUrl: "http://localhost:3000/auth.html"}));
+    setUser(user);
+  };
+  return <button onClick={loginGoogle}>Log In</button>;
+};
+// Create a component that displays the given user's details
+const UserDetail = ({ user }: { user: Realm.User }) => {
+  window.console.log("User", user);
+
+
+  return (
+    <div>
+      <p>Logged in with user id: {user.id}</p>
+      <h2>First name: {user.profile.firstName}</h2>
+      <h2>Last name: {user.profile.lastName}</h2>
+    </div>
+  );
+};
+
+interface LogOutProps {
+  user: Realm.User;
+  setUser: (user: Realm.User | null) => void;
+};
+
+const LogOut = ({user, setUser}: LogOutProps) => {
+  const handleClick = (e: MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    if (user !== null && app.currentUser) {
+      app.currentUser.logOut();
+      setUser(null);
+    }
+  };
+  return (
+    <button onClick={handleClick}>Log Out</button>
+  );
+}
 
 
 interface SearchResponse {
@@ -30,21 +76,13 @@ function App() {
   };
 
 
-  const encodedBookName = encodeURIComponent(bookName);
+
   
   const handleClick = async (event: MouseEvent<HTMLElement>) => {
-    event.preventDefault();
+    event.preventDefault();  
+    const encodedBookName = encodeURIComponent(bookName);
     setFetchUri(`https://openlibrary.org/search.json?q=${encodedBookName}`);
   };
-
-  //const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-  //  e.preventDefault();
-  //  if (e.key === 'Enter') {
-  //    setFetchUri(`https://openlibrary.org/search.json?q=${encodedBookName}`);
-  //   }
-  //};
-
-
 
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-start gap-4 mt-20 text-center">
