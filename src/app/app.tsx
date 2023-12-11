@@ -16,7 +16,7 @@ interface LoginProps {
 
 const Login = ({ setUser }: LoginProps) => {
   const loginGoogle = async () => {
-    const user: Realm.User = await app.logIn(Realm.Credentials.google({redirectUrl: "http://localhost:3000/auth.html"}));
+    const user: Realm.User = await app.logIn(Realm.Credentials.google({redirectUrl: "https://fantastic-kheer-56be09.netlify.app"}));
     setUser(user);
   };
   return <button onClick={loginGoogle}>Log In</button>;
