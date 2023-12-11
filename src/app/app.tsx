@@ -25,7 +25,6 @@ const Login = ({ setUser }: LoginProps) => {
 const UserDetail = ({ user }: { user: Realm.User }) => {
   window.console.log("User", user);
 
-
   return (
     <div>
       <p>Logged in with user id: {user.id}</p>
