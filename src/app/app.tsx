@@ -16,7 +16,7 @@ interface LoginProps {
 
 const Login = ({ setUser }: LoginProps) => {
   const loginGoogle = async () => {
-    const user: Realm.User = await app.logIn(Realm.Credentials.google({redirectUrl: "https://fantastic-kheer-56be09.netlify.app"}));
+    const user: Realm.User = await app.logIn(Realm.Credentials.google({redirectUrl: "https://fantastic-kheer-56be09.netlify.app/auth.html"}));
     setUser(user);
   };
   return <button onClick={loginGoogle}>Log In</button>;
@@ -70,6 +70,7 @@ const BookNameSchema = Yup.object().shape({
 function App() {
   const [bookName, setBookName] = useState("");
   const [fetchUri, setFetchUri] = useState("");
+  const [user, setUser] = useState<Realm.User | null>(app.currentUser);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setBookName(e.target.value);
@@ -86,6 +87,12 @@ function App() {
 
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-start gap-4 mt-20 text-center">
+        <div className="App">
+      <div className="App-header">
+        {user ? <UserDetail user={user} /> : <Login setUser={setUser} />}
+      </div>
+        {user ? <LogOut setUser={setUser} user={user} /> : <></> }
+    </div>
       <Formik
         initialValues={{ bookName: '' }}
         validationSchema={BookNameSchema}
